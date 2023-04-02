@@ -35,6 +35,7 @@ void SLFromFile::createRandomFile(const std::string &fileName, int startIndex, i
 
     auto finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = finish - start;
+    _executionTime += elapsed.count();
     std::cout << "Create file Elapsed time: " << elapsed.count() << " sec" << std::endl;
 }
 
@@ -60,7 +61,8 @@ void SLFromFile::sortFile(const std::string &fileName)
     }
     fs.close();
     auto finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double>  elapsed = finish - start;
+    std::chrono::duration<double> elapsed = finish - start;
+    _executionTime += elapsed.count();
     std::cout << "Sort file elapsed time: " << elapsed.count() << " sec" << std::endl;
     mergingFiles("negative.txt", "positive.txt");
 }
@@ -294,6 +296,7 @@ void SLFromFile::mergingFiles(const std::string &file1, const std::string &file2
 
     auto finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = finish - start;
+    _executionTime += elapsed.count();
     if (isSucces)
     {
         std::cout << "Success! Elapsed time: " << elapsed.count() << " sec" << std::endl;
@@ -306,9 +309,12 @@ void SLFromFile::mergingFiles(const std::string &file1, const std::string &file2
     std::ifstream out(_fileName, std::ifstream::ate | std::ifstream::binary);
     if (out.is_open())
     {
-        int randomFileSize = out.tellg();
+
         std::cout << "Размер исходного файла -> " << randomFileSize << " байт.";
+        randomFileSize = out.tellg();
         std::cout << " : Размер отсортированного файла -> " << randomFileSize << " байт.\n";
         out.close();
     }
+
+    std::cout << "Programm execution time: " << _executionTime << " sec.\n";
 }

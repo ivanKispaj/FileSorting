@@ -20,14 +20,13 @@ class SLFromFile
     long long int _fileSizeByte{0};
     const int _partSize = 1000000;
     std::string _fileName;
-
+    double _executionTime;
     /// @brief
     /// @param array
     /// @return int size of array
     int readFilePartToArray(std::fstream &fs, int *&array);
     void mergeToTempFiles(const int *array, int size);
-    void mergingFiles(const std::string &file1,const std::string &file2);
-    
+    void mergingFiles(const std::string &file1, const std::string &file2);
 
 public:
     /// @brief Creates an SL From File object with a default file size of 2Gb
@@ -39,8 +38,10 @@ public:
     /// @param fileExtension string -> File extension
     SLFromFile(double fileSizeGb, const std::string &fileName) : _fileSizeGb(fileSizeGb),
                                                                  _fileSizeByte(_fileSizeGb * 1073741824),
-                                                                 _fileName(fileName)
+                                                                 _fileName(fileName),
+                                                                 _executionTime(0)
     {
+        // Clear temporary files if isset
         std::fstream negative;
         std::fstream positive;
         negative.open("negative.txt", std::fstream::out | std::fstream::trunc);
